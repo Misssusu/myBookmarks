@@ -19,8 +19,15 @@ var hash = {
     's' : 'souhu.com',
     'z' : 'zhihu.com'
 }
+//start 获取localStorage中的hash
+var localHash = JSON.parse(localStorage.getItem('newHash') || null);
+if(localHash) {
+    hash = localHash;
+}
+//end
 var contener = document.getElementById('contener');
 var index = 0;
+//画页面
 while (index < keys['length']) {
     var divBox = document.createElement('div');
     contener.appendChild(divBox);
@@ -29,6 +36,19 @@ while (index < keys['length']) {
         var kbd = document.createElement('span');
         kbd.textContent = keys[index][num];
         divBox.appendChild(kbd);
+        //添加编辑按钮
+        var button = document.createElement('button');
+        button.textContent = '编辑';
+        button.id = keys[index][num];
+        kbd.appendChild(button);
+        //编辑
+        button.onclick = function(evt) {
+            var newLink = prompt('请输入一个网址');
+            var targetButton = evt.target.id;
+            hash[evt.target.id] = newLink;
+            //存储编辑后的hash
+            localStorage.setItem('newHash',JSON.stringify(hash));
+        }
         num ++;
     }
     index ++ ;
